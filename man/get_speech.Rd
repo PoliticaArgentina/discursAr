@@ -31,5 +31,5 @@ Función que descarga los discursos presidenciales ante la Asamblea Legislativa 
 
 }
 \seealso{
-\code{\link{plot_speech}}
+\code{\link{show_available_speech}}
 }

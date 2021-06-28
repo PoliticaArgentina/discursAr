@@ -26,6 +26,8 @@ Imports:
     rvest,
     stringr,
     tibble,
-    assertthat
+    assertthat,
+    janitor,
+    vroom
 Suggests: 
     DT

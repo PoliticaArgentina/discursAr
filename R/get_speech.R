@@ -17,7 +17,7 @@
 #'  (\emph{it retruns a tibble with three variables (speech - \code{discurso} - president -\code{presidente} and \code{year}).
 #' The object is of \code{class "tbl_df","tbl","data.frame"}}).
 #'
-#' @seealso  \code{\link{plot_speech}}
+#' @seealso  \code{\link{show_available_speech}}
 #'
 #' @examples
 #'
@@ -59,50 +59,72 @@ Por favor seleccione una discurso valido. Consultelos con 'show_available_speech
 
   if(raw == FALSE){ #Tidy version of speech
 
-    speech_year <- year
+             speech_year <- year
 
-    get_ids <- check_speech %>% # We build this because we need not only year but also speaker names
-      dplyr::filter(year == speech_year)
-
-
-    url_tidy <- glue::glue("https://github.com/electorArg/PolAr_Data/blob/master/speech/{get_ids$year}-{get_ids$president}.csv?raw=true")
-
-    ## FAIL SAFELEY
-
-    check <- httr::GET(url_tidy)
-
-    httr::stop_for_status(x = check,
-                          task = "Fail to download speech data. Source is not available // La fuente de datos de discursos no esta disponible")
+             get_ids <- check_speech %>% # We build this because we need not only year but also speaker names
+               dplyr::filter(year == speech_year)
 
 
+             url_tidy <- glue::glue("https://raw.githubusercontent.com/PoliticaArgentina/data_warehouse/master/discursAr/{get_ids$year}-{get_ids$president}.csv?raw=true")
 
-    df <- readr::read_csv(file = url_tidy,
-                          col_types = readr::cols())
-
-
-  }else{  # RAW version of speech
-
-    url_raw <- "https://raw.githubusercontent.com/electorArg/PolAr_Data/master/speech/raw_opening_speeches.csv"
+             ## FAIL SAFELEY
 
 
+             # Set default value for try()
 
-    ## FAIL SAFELEY
+             default <- NULL
 
-    check <- httr::GET(url_raw)
+             df <- base::suppressWarnings(base::try(default <-  vroom::vroom(url_tidy,
+                                                                             col_types = vroom::cols() ) %>%
+                                                      janitor::clean_names(),
+                                                    silent = TRUE))
 
-    httr::stop_for_status(x = check,
-                          task = "Fail to download data. Source is not available // La fuente de datos no esta disponible")
+               if(is.null(default)){
+
+                 df <- base::message("Fail to download data. Source is not available // La fuente de datos no esta disponible")
+
+
+                 } else{
+
+                 return(df)
+
+                   }
+
+    } else {  # RAW version of speech
+
+            url_raw <- "https://raw.githubusercontent.com/PoliticaArgentina/data_warehouse/master/discursAr/raw_opening_speeches.csv"
+
+
+
+                    ## FAIL SAFELEY
+
+                  # Set default value for try()
+
+                  default <- NULL
+
+                  df <- base::suppressWarnings(base::try(default <-  vroom::vroom(url_raw,
+                                                                                  col_types = vroom::cols()) %>%
+                                                           janitor::clean_names() %>%
+                                                           dplyr::filter(year == anio),
+                                                         silent = TRUE))
+
+                  if(is.null(default)){
+
+                    df <- base::message("Fail to download data. Source is not available // La fuente de datos no esta disponible")
+
+
+                  } else{
+
+                    return(df)
+
+                  }
 
 
 
 
-        df <- readr::read_csv(url_raw,
-                              col_types = readr::cols()) %>%
-          dplyr::filter(year == anio)
-  }
+      } # Closes raw / tidy if-else
 
-  df
 
-  }
+  } # Close function
 
 

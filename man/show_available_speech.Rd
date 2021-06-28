@@ -23,8 +23,8 @@ object of \code{class "datatables","htmlwidget"}}).
 Función que devuelve un listado de discursos de apertura de sesiones emitidos por los presidentes de Argentina ante la Asamblea Legislativa.
 }
 \examples{
- 
+
  show_available_speech()
- 
+
 
 }

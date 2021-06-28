@@ -3,7 +3,7 @@
 \docType{package}
 \name{discurAr}
 \alias{discurAr}
-\title{\code{polAr} package}
+\title{\code{discursAr} package}
 \description{
 Caja de Herramientas para el procesamiento de discursos presidenciales de Argentina
 See the README on
