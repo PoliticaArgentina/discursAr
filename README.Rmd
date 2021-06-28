@@ -1,22 +1,37 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # discursAr
 
 <!-- badges: start -->
+  [![R-CMD-check](https://github.com/PoliticaArgentina/discursAr/workflows/R-CMD-check/badge.svg)](https://github.com/PoliticaArgentina/discursAr/actions)
+  <!-- badges: end -->
 
-[![R-CMD-check](https://github.com/PoliticaArgentina/discursAr/workflows/R-CMD-check/badge.svg)](https://github.com/PoliticaArgentina/discursAr/actions)
-<!-- badges: end -->
+
 
 # Herramientas para el análisis de `discurs`os políticos de `Ar`rgentina usando `R` <a><img src="https://github.com/politicaargentina/data_warehouse/blob/master/hex/discursAr.png?raw=true" width="200" align="right" /></a>
 
-------------------------------------------------------------------------
+
+---
 
 ### INSTALACIÓN
 
-### Versión en desarrollo (*Development version*)
+### Versión en desarrollo (*Development version*) 
 
-``` r
+```r
+
 # install.packages('devtools') si no tiene instalado devtools
 
 devtools::install_github("politicaargentina/discursAr")
