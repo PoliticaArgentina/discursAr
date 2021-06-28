@@ -2,11 +2,23 @@ Package: discursAr
 Title: Argentina´s Presidential Speeches Toolbox
 Version: 0.0.1.0
 Authors@R: 
-    person(given = "Juan Pablo",
+    c(person(given = "Juan Pablo",
            family = "Ruiz Nicolini",
            role = c("aut", "cre", "cph"),
            email = "juanpabloruiznicolini@gmail.com",
-           comment = c(ORCID = "0000-0002-3138-6343"))
+           comment = c(ORCID = "0000-0002-3138-6343")),
+    person(given = "Camila",
+           family = "Higa",
+           email= "chiga1226@gmail.com", 
+           role = c("ctb")),
+    person(given = "Carolina",
+           family = "Franco",
+           email= "caro.franco.brc@gmail.com", 
+           role = c("ctb")),
+    person(given = "Lucas",
+           family ="Enrich",
+           email="lucas.a.enrich@gmail.com", 
+           role = c("ctb")))
 Description: Facilita el acceso a discursos presidenciales de Argentina. 
 License: MIT + file LICENSE
 Encoding: UTF-8
