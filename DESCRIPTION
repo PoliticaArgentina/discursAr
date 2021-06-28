@@ -20,9 +20,7 @@ Imports:
     dplyr,
     glue,
     httr,
-    readr,
     xml2,
-    wordcloud2,
     rvest,
     stringr,
     tibble,
@@ -31,3 +29,5 @@ Imports:
     vroom
 Suggests: 
     DT
+URL: https://github.com/PoliticaArgentina/discursAr
+BugReports: https://github.com/PoliticaArgentina/discursAr/issues
