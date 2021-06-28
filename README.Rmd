@@ -36,3 +36,50 @@ knitr::opts_chunk$set(
 
 devtools::install_github("politicaargentina/discursAr")
 ```
+
+
+---
+
+# Ejemplo de uso (_Usage_)
+
+
+```{r}
+library(discursAr)
+
+show_available_speech()
+
+
+```
+
+
+**Discurso _tidy_**
+
+```{r}
+get_speech(year = 1946)
+```
+
+
+**Discurso crudo**
+
+```{r}
+(peron46 <- get_speech(year = 1946, raw = TRUE))
+
+
+peron46 %>% 
+  dplyr::pull(discurso)
+
+
+```
+
+
+
+
+
+
+## `{discursAr}` es parte del universo de paquetes **polAr**
+
+
+```{r, echo=FALSE}
+knitr::include_graphics("https://github.com/PoliticaArgentina/data_warehouse/raw/master/hex/collage.png")
+```
+
