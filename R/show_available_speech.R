@@ -31,38 +31,59 @@ show_available_speech <- function(viewer = FALSE){
 
 
 
-url <- 'https://github.com/electorArg/PolAr_Data/tree/master/speech'
+gh_url <- 'https://api.github.com/repos/PoliticaArgentina/data_warehouse/git/trees/master?recursive=1'
 
-## FAIL SAFELEY
+response <- httr::GET(url = gh_url)
 
-check <- httr::GET(url)
 
-httr::stop_for_status(x = check,
-                      task = "Fail to download data. Source is not available // La fuente de datos no esta disponible")
+
+
+check_status <- function(res){
+  attempt::stop_if_not(.x = httr::status_code(res),
+                       .p = ~ .x == 200,
+                       msg = httr::message_for_status(res, "get data from  Github API"))
+}
+
+
+
+
+
+check_status(response)
+
 
 
 # Get list of files from github data repo
-pg <- xml2::read_html(url)
+
+# GET DATA
+
+gh_content <- jsonlite::fromJSON(httr::content(response, 'text'))
 
 
-filelist <- rvest::html_nodes(pg, "a") %>%
-  rvest::html_attr(name = "href" ) %>%
-  stringr::str_match('.*csv') %>%
-  stats::na.omit() %>%
-  tibble::as_tibble(.name_repair = "minimal")  %>%
-  dplyr::rename(name = 1) %>%
-  dplyr::mutate(name = stringr::str_remove(name, pattern = "/electorArg/PolAr_Data/blob/master/speech/"),
-                name = stringr::str_remove(name, pattern = ".csv")) %>%
+# Wrangle data
+
+filelist <- tibble::as.tibble(purrr::pluck(.x = gh_content, 'tree')) %>%
+  dplyr::select(path)  %>%
+  dplyr::filter(stringr::str_detect(path, "discursAr/"),
+                stringr::str_detect(path, ".csv")) %>%
+  dplyr::mutate(name = stringr::str_remove(path, pattern = "discursAr/")) %>%
+  dplyr::mutate(name = stringr::str_replace_all(string= name, pattern = "_", replacement = " "),
+                name = stringr::str_replace_all(string= name, pattern = "-", replacement = "")) %>%
   dplyr::transmute(year = stringr::str_sub(name, start = 1, end = 4),
-                   president = stringr::str_sub(string = name, start = 6, end = -1))
+                   name = stringr::str_squish(name)) %>%
+  dplyr::mutate(name = stringr::str_remove_all(name, "\\d")) %>%
+  dplyr::mutate(name = stringr::str_remove_all(name, ".csv")) %>%
+  tibble::as_tibble()
+
+
+
+
 
 if(viewer == TRUE){
 
   x <-  filelist %>%
     dplyr::rename(id = year,
-           Presidente = president) %>%
-    dplyr::mutate(Presidente = stringr::str_replace_all(string = Presidente, pattern = "_", " "),
-                  Presidente = stringr::str_to_title(Presidente)) %>%
+           Presidente = name) %>%
+    dplyr::mutate(Presidente = stringr::str_to_title(Presidente)) %>%
     DT::datatable(options = list(
       language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')))
   print(x)
@@ -70,6 +91,7 @@ if(viewer == TRUE){
 
 } else {
 
-  filelist
-}
+  print(filelist)
+
+  }
 }
