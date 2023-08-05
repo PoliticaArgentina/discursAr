@@ -1,6 +1,6 @@
 Package: discursAr
 Title: Argentina´s Presidential Speeches Toolbox
-Version: 0.0.1.0
+Version: 0.0.1.0.1
 Authors@R: 
     c(person(given = "Juan Pablo",
            family = "Ruiz Nicolini",
