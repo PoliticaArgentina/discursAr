@@ -17,4 +17,5 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("Presidente",
                                                         "name",
                                                         "president",
                                                         "word",
-                                                        "year"))
+                                                        "year",
+                                                        "path"))

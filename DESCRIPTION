@@ -32,13 +32,13 @@ Imports:
     dplyr,
     glue,
     httr,
-    xml2,
-    rvest,
     stringr,
     tibble,
     assertthat,
     janitor,
-    vroom
+    vroom, 
+    jsonlite, 
+    purrr
 Suggests: 
     DT
 URL: https://github.com/PoliticaArgentina/discursAr
