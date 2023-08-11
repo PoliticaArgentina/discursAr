@@ -61,18 +61,17 @@ gh_content <- jsonlite::fromJSON(httr::content(response, 'text'))
 
 # Wrangle data
 
-filelist <- tibble::as.tibble(purrr::pluck(.x = gh_content, 'tree')) %>%
+filelist <- tibble::as_tibble(purrr::pluck(.x = gh_content, 'tree')) %>%
   dplyr::select(path)  %>%
   dplyr::filter(stringr::str_detect(path, "discursAr/"),
                 stringr::str_detect(path, ".csv")) %>%
-  dplyr::mutate(name = stringr::str_remove(path, pattern = "discursAr/")) %>%
-  dplyr::mutate(name = stringr::str_replace_all(string= name, pattern = "_", replacement = " "),
+  dplyr::mutate(name = stringr::str_remove(path, pattern = "discursAr/"),
+                year = stringr::str_sub(name, start = 1, end = 4),
                 name = stringr::str_replace_all(string= name, pattern = "-", replacement = "")) %>%
-  dplyr::transmute(year = stringr::str_sub(name, start = 1, end = 4),
-                   name = stringr::str_squish(name)) %>%
   dplyr::mutate(name = stringr::str_remove_all(name, "\\d")) %>%
   dplyr::mutate(name = stringr::str_remove_all(name, ".csv")) %>%
-  tibble::as_tibble()
+  dplyr::rename(president = name) %>%
+  dplyr::select(- path)
 
 
 
@@ -81,17 +80,21 @@ filelist <- tibble::as.tibble(purrr::pluck(.x = gh_content, 'tree')) %>%
 if(viewer == TRUE){
 
   x <-  filelist %>%
+    dplyr::mutate(president = stringr::str_replace_all(string = president, pattern = "_", replacement = " ")) %>%
     dplyr::rename(id = year,
-           Presidente = name) %>%
+           Presidente = president) %>%
     dplyr::mutate(Presidente = stringr::str_to_title(Presidente)) %>%
     DT::datatable(options = list(
       language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json')))
+
+
   print(x)
 
 
 } else {
 
-  print(filelist)
+
+  return(filelist)
 
   }
 }
